@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Back Catalog Analysis — Arrested Youth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#D9332E;
+    --maroon:#8E2128;
+    --charcoal:#232326;
+    --ink:#3B3B3F;
+    --muted:#8B8B90;
+    --line:#ECEAE8;
+    --bg:#FFFFFF;
+    --bg-soft:#FAF7F6;
+    --pink:#FBE6E3;
+    --orange:#F0883A;
+    --grad:linear-gradient(90deg,#D9332E 0%,#F0883A 100%);
+    --neg:#D9332E;
+    --pos:#C26A1F;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:960px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:.04em;
+    color:var(--red);font-size:14px;text-transform:uppercase;white-space:nowrap;
+  }
+  .nav-links{display:flex;gap:6px;flex-wrap:wrap;}
+  .nav-links a{
+    text-decoration:none;color:var(--muted);font-weight:500;font-size:14px;
+    padding:6px 14px;border-radius:999px;transition:.18s;
+  }
+  .nav-links a:hover{color:var(--maroon);}
+  .nav-links a.active{background:var(--pink);color:var(--maroon);font-weight:600;}
+
+  /* ---------- HERO ---------- */
+  header.hero{padding:72px 24px 56px;text-align:center;}
+  .avatar{
+    width:128px;height:128px;border-radius:50%;margin:0 auto 32px;
+    border:4px solid var(--red);
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 35%,#fff 0%,#FBEDEB 100%);
+    font-family:'Poppins',sans-serif;font-weight:800;font-size:42px;
+    color:var(--maroon);letter-spacing:.02em;
+    box-shadow:0 8px 28px rgba(217,51,46,.14);
+  }
+  .eyebrow{
+    text-transform:uppercase;letter-spacing:.18em;font-size:12px;font-weight:600;
+    color:var(--red);margin-bottom:18px;font-family:'Poppins',sans-serif;
+  }
+  h1.title{
+    font-family:'Poppins',sans-serif;font-weight:800;
+    font-size:clamp(38px,6vw,64px);line-height:1.04;margin:0 0 18px;
+    color:var(--charcoal);letter-spacing:-.01em;
+  }
+  h1.title .accent{color:var(--maroon);}
+  .subtitle{
+    font-size:clamp(17px,2.4vw,21px);color:var(--ink);font-weight:500;
+    max-width:620px;margin:0 auto 16px;line-height:1.4;
+  }
+  .platforms{color:var(--muted);font-size:15px;letter-spacing:.01em;}
+  .platforms span{margin:0 8px;}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:18px 0 8px;scroll-margin-top:84px;}
+  .accent-rule{width:88px;height:4px;border-radius:3px;background:var(--grad);margin:0 0 14px;}
+
+  h2{
+    font-family:'Poppins',sans-serif;font-weight:700;
+    font-size:clamp(26px,4vw,36px);color:var(--charcoal);
+    margin:48px 0 4px;letter-spacing:-.01em;line-height:1.12;
+  }
+  h2 .num{color:var(--red);margin-right:10px;}
+  h3{
+    font-family:'Poppins',sans-serif;font-weight:600;
+    font-size:22px;color:var(--charcoal);margin:38px 0 10px;
+    padding-left:14px;border-left:4px solid var(--red);
+  }
+  h4{
+    font-family:'Poppins',sans-serif;font-weight:600;
+    font-size:19px;color:var(--maroon);margin:30px 0 6px;
+  }
+  h5{
+    font-family:'Poppins',sans-serif;font-weight:600;
+    font-size:16px;color:var(--charcoal);margin:24px 0 8px;
+    text-transform:uppercase;letter-spacing:.04em;
+  }
+  p{margin:12px 0;}
+  strong{color:var(--charcoal);font-weight:700;}
+  .lede{color:var(--muted);font-size:16px;margin:4px 0 20px;}
+
+  /* stat line under track names */
+  .statline{
+    background:var(--bg-soft);border:1px solid var(--line);border-radius:10px;
+    padding:12px 16px;font-size:14.5px;color:var(--ink);margin:6px 0 14px;
+    font-weight:500;
+  }
+  .statline b{color:var(--maroon);}
+
+  /* ---------- LISTS ---------- */
+  ul{margin:12px 0;padding-left:0;list-style:none;}
+  ul li{position:relative;padding-left:26px;margin:9px 0;}
+  ul li::before{
+    content:"";position:absolute;left:6px;top:11px;
+    width:7px;height:7px;border-radius:50%;background:var(--red);
+  }
+  ul.plain li::before{background:var(--orange);}
+
+  /* ---------- TABLES ---------- */
+  .table-scroll{overflow-x:auto;margin:16px 0 22px;border-radius:12px;border:1px solid var(--line);}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;background:#fff;}
+  thead th{
+    background:var(--bg-soft);color:var(--charcoal);font-weight:600;
+    text-align:left;padding:12px 14px;border-bottom:2px solid var(--red);
+    font-family:'Poppins',sans-serif;font-size:13px;white-space:nowrap;
+  }
+  tbody td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:#FCFAF9;}
+  td.total,tr.total td{font-weight:700;color:var(--charcoal);background:#FBEDEB;}
+  .neg{color:var(--neg);font-weight:600;}
+  .pos{color:var(--pos);font-weight:600;}
+
+  /* ---------- CALLOUTS ---------- */
+  .callout{
+    background:var(--bg-soft);border-left:4px solid var(--red);border-radius:0 10px 10px 0;
+    padding:16px 20px;margin:20px 0;
+  }
+  .callout.insight{background:#FBEDEB;border-left-color:var(--maroon);}
+  .callout.note{
+    background:transparent;border-left:3px dashed var(--line);
+    color:var(--muted);font-style:italic;font-size:14px;padding:8px 18px;
+  }
+  .verdict-box{
+    background:var(--grad);color:#fff;border-radius:16px;padding:28px 30px;margin:24px 0;
+    box-shadow:0 12px 36px rgba(217,51,46,.18);
+  }
+  .verdict-box h3{color:#fff;border:none;padding:0;margin:0 0 10px;font-size:22px;}
+  .verdict-box p{margin:0;font-size:16.5px;line-height:1.6;}
+  .verdict-box b,.verdict-box strong{color:#fff;}
+
+  .priority-card{
+    display:flex;gap:16px;align-items:flex-start;
+    background:var(--bg-soft);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;margin:12px 0;
+  }
+  .priority-tag{
+    flex-shrink:0;background:var(--maroon);color:#fff;font-family:'Poppins',sans-serif;
+    font-weight:600;font-size:13px;padding:6px 12px;border-radius:8px;white-space:nowrap;
+  }
+  .priority-tag.sub{background:var(--orange);}
+
+  footer{
+    margin-top:64px;padding:40px 24px;border-top:1px solid var(--line);
+    text-align:center;color:var(--muted);font-size:13px;
+  }
+  footer .dot{color:var(--red);margin:0 8px;}
+
+  @media(max-width:600px){
+    .wrap{padding:0 16px;}
+    .nav-inner{padding:12px 16px;}
+    .brand{font-size:12px;}
+    .nav-links a{padding:5px 10px;font-size:13px;}
+    header.hero{padding:48px 16px 40px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="brand">Arrested Youth &times; ENKO &times; LIRA</div>
+    <div class="nav-links">
+      <a href="#spotify" class="active">Spotify</a>
+      <a href="#youtube">YouTube</a>
+      <a href="#tiktok">TikTok &amp; IG</a>
+      <a href="#comparison">Comparison</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <h1 class="title">Arrested Youth</h1>
+</header>
+
+<div class="wrap">
+
+  <!-- ===================== ALBUM 2025 ===================== -->
+  <section id="album">
+    <div class="accent-rule"></div>
+    <h2>Album 2025</h2>
+
+    <h3>Clear My Throat</h3>
+    <div class="statline">Total: <b>~1.63M</b> · Daily: <b>~2K</b> · Accumulated in 2026: <b>293K</b></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Year</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>Early 2026</td><td>1.34M</td><td>9K</td><td>Start/Peak</td><td>Added to several editorial/algorithmic playlists</td></tr>
+          <tr><td>May 2026</td><td>293K</td><td>2K</td><td class="neg">-78%</td><td>Exit from active playlists, residual listening from media libraries</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>I Cry</h3>
+    <div class="statline">Total: <b>~242K</b> · Daily: <b>~0.6K</b> · Accumulated in 2026: <b>52K</b></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Period</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>Early 2026</td><td>190K</td><td>3.3K</td><td>Peak</td><td>Weak start — minimal playlist support</td></tr>
+          <tr><td>May 2026</td><td>52K</td><td>0.6K</td><td class="neg">-82%</td><td>Loss of all playlists, "thin tail"</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Window Pains</h3>
+    <div class="statline">Total: <b>~339K</b> · Daily: <b>~0.3K</b> · Accumulated in 2026: <b>75K</b></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Period</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>Early 2026</td><td>264K</td><td>1.7K</td><td>Peak</td><td>Moderate start, niche playlist rotation</td></tr>
+          <tr><td>May 2026</td><td>75K</td><td>0.3K</td><td class="neg">-82%</td><td>Almost complete dropout from recommendations</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The 3-track catalog lost <strong>~79% of daily streams in 5 months</strong> instead of growing — this is not a natural decay, it is a promotional cliff drop in the first 1-2 weeks after release.</p>
+    <p>A minimum of <strong>1.6M streams lost</strong> from the baseline scenario and potentially up to <strong>5-7M</strong> from the scenario with full promo.</p>
+
+    <h4>Why this is critical</h4>
+    <ul>
+      <li>The first 6 months represent <strong>80% of a track's lifetime value</strong>. You are losing the most expensive monetization period.</li>
+      <li>The Spotify algorithm "remembers" low metrics: resuscitating a track after 6+ months is <strong>3-5 times more expensive</strong> than supporting it in the first month.</li>
+      <li>Listener psychology: a track that didn't secure a spot in libraries during the first 2 weeks won't return organically.</li>
+    </ul>
+
+    <div class="callout note">[Graphs omitted as per platform constraints]</div>
+
+    <p>For comparison: <strong>The Kid I Used to Know</strong> at 13 months was at 41% of its future peak and still growing — while current tracks at the same point were already falling.</p>
+    <p>This is not just a decline — it is an <strong>inversion of the normal track lifecycle</strong>.</p>
+  </section>
+
+  <!-- ===================== 1. SPOTIFY ===================== -->
+  <section id="spotify">
+    <h2><span class="num">1.</span>Spotify Audit</h2>
+
+    <h3>1.1 General analysis of the back catalog</h3>
+    <p>The TOP-5 tracks of the back catalog by total stream count show a steady negative dynamic with a significant drop in streams.</p>
+
+    <h4>The Kid I Used to Know</h4>
+    <div class="statline">Total: <b>107.10M</b> · Daily: <b>~31.8K</b> · Popularity: <b>63%</b> | Playlists: <b>600</b> · Playlist Reach: <b>~1.28M</b> · Track Rank: <b>#21K+</b></div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Year</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>2021</td><td>8.31M</td><td>37.4K</td><td>Start</td><td>Initial release and first playlists.</td></tr>
+          <tr><td>2022</td><td>26.11M</td><td>50.6K</td><td class="pos">+35%</td><td>Gradual momentum building, addition to new curated lists.</td></tr>
+          <tr><td>2023</td><td>58.11M</td><td>90.1K</td><td>Peak</td><td>Maximum reach, track at the peak of popularity in algorithms.</td></tr>
+          <tr><td>2024</td><td>87.71M</td><td>83.2K</td><td class="neg">-8%</td><td>Beginning of natural decay, slight drop in Playlist Reach.</td></tr>
+          <tr><td>2025</td><td>102.11M</td><td>40.2K</td><td class="neg">-52%</td><td>Critical drop, end of the active phase of the track's lifecycle.</td></tr>
+          <tr><td>2026</td><td>107.10M</td><td>31.8K</td><td class="neg">-21%</td><td>Stabilization at the "tail" level of listens from user libraries.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Overall daily decline:</strong> <span class="neg">-65% from peak</span> (90.1K → 31.8K)</p>
+    <p><strong>Reason for decline:</strong> The track passed its natural cyclical peak in 2023. The rapid fall in 2025 is associated with the massive wash-out of the track from large editorial playlists and algorithmic selections.</p>
+
+    <h4>What You're Made Of</h4>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Year</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>2021</td><td>1.24M</td><td>6.05K</td><td>Start</td><td>Single release, minimal listens.</td></tr>
+          <tr><td>2022</td><td>4.95M</td><td>9.76K</td><td class="pos">+61%</td><td>Gradual organic growth due to new listeners.</td></tr>
+          <tr><td>2023</td><td>11.31M</td><td>16.5K</td><td class="pos">+69%</td><td>Active push, significant increase in playlist placements.</td></tr>
+          <tr><td>2024</td><td>18.23M</td><td>18.0K</td><td>Peak</td><td>Highest point of engagement and maximum presence in rotations.</td></tr>
+          <tr><td>2025</td><td>25.01M</td><td>17.6K</td><td class="neg">-2%</td><td>Maximum stability, retention of positions with almost no losses.</td></tr>
+          <tr><td>2026</td><td>27.40M</td><td>14.7K</td><td class="neg">-16%</td><td>Transition to the catalog category, planned reduction in daily streams.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Overall daily decline:</strong> <span class="neg">-18% from peak</span> (18.0K → 14.7K)</p>
+    <p><strong>Reason for decline:</strong> The decline is minimal and very smooth. It is caused solely by the time factor and the aging of the release. The track demonstrates a phenomenal lifecycle cyclicity: even after dropping out of some playlists, it firmly secured itself in listeners' personal tracks, which curbs the fall.</p>
+
+    <h4>Brightside</h4>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Year</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>2022</td><td>10.00M</td><td>66.3K</td><td>Peak</td><td>Powerful start, likely viral effect or chart entry.</td></tr>
+          <tr><td>2023</td><td>14.69M</td><td>13.3K</td><td class="neg">-80%</td><td>Hard drop, burnout of initial interest in the track.</td></tr>
+          <tr><td>2024</td><td>18.88M</td><td>10.8K</td><td class="neg">-19%</td><td>Slowdown of the fall, fixation in long-term playlist bases.</td></tr>
+          <tr><td>2025</td><td>22.93M</td><td>10.4K</td><td class="neg">-4%</td><td>Stabilization of numbers at the level of the formed core audience.</td></tr>
+          <tr><td>2026</td><td>24.17M</td><td>8.19K</td><td class="neg">-21%</td><td>Moderate sagging due to planned reduction in curator reach.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Overall daily decline:</strong> <span class="neg">-88% from peak</span> (66.3K → 8.19K)</p>
+    <p><strong>Reason for decline:</strong> A classic example of a "flash track". An abnormally high start in 2022 (possible social media trend or huge chart success) quickly faded in 2023 due to the short lifecycle of such viral events. The decline occurred due to the immediate exclusion of the track from top playlists, after which the track reached its base stabilization level.</p>
+
+    <h4>Vans - King Kavalier Remix</h4>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Year</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>2021</td><td>2.03M</td><td>9.67K</td><td>Start</td><td>First placements of the remix in specific niche selections.</td></tr>
+          <tr><td>2022</td><td>6.21M</td><td>11.5K</td><td>Peak</td><td>Highest daily metrics thanks to club curator support.</td></tr>
+          <tr><td>2023</td><td>9.36M</td><td>8.49K</td><td class="neg">-26%</td><td>Beginning of recession, loss of positions in seasonal rotations.</td></tr>
+          <tr><td>2024</td><td>11.45M</td><td>5.63K</td><td class="neg">-34%</td><td>Noticeable decline, significant reduction in the number of playlists.</td></tr>
+          <tr><td>2025</td><td>12.89M</td><td>3.77K</td><td class="neg">-33%</td><td>Progressive fall, loss of release relevance.</td></tr>
+          <tr><td>2026</td><td>13.36M</td><td>2.86K</td><td class="neg">-24%</td><td>Deep fading, working exclusively on passive algorithms.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Overall daily decline:</strong> <span class="neg">-75% from peak</span> (11.5K → 2.86K)</p>
+    <p><strong>Reason for decline:</strong> Genre specificity of the release. Electronic remixes have a much shorter relevance period and are quickly replaced by new trends. The decline occurred annually due to a steady and inevitable decrease in the number of curated playlists and a drop in total Playlist Reach.</p>
+
+    <h4>98 Degrees</h4>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Year</th><th>Acc. streams</th><th>Daily avg</th><th>Daily change</th><th>Status / Reason for dynamics</th></tr></thead>
+        <tbody>
+          <tr><td>2021</td><td>4.40M</td><td>19.8K</td><td>Peak</td><td>Maximum initial push and launch of the track from high positions.</td></tr>
+          <tr><td>2022</td><td>8.72M</td><td>11.8K</td><td class="neg">-40%</td><td>Rapid fall, track didn't hold in active algorithms.</td></tr>
+          <tr><td>2023</td><td>12.27M</td><td>9.72K</td><td class="neg">-18%</td><td>Continuation of the gradual fall in daily demand.</td></tr>
+          <tr><td>2024</td><td>15.55M</td><td>8.98K</td><td class="neg">-8%</td><td>Temporary retention of positions due to a local spike in reach.</td></tr>
+          <tr><td>2025</td><td>18.25M</td><td>7.39K</td><td class="neg">-18%</td><td>Return to the fading trend of the lifecycle.</td></tr>
+          <tr><td>2026</td><td>19.20M</td><td>5.84K</td><td class="neg">-21%</td><td>Complete transition of the track into the deep old catalog category.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Overall daily decline:</strong> <span class="neg">-71% from peak</span> (19.8K → 5.84K)</p>
+    <p><strong>Reason for decline:</strong> The track received the most support right at the start (2021) but couldn't catch onto long-term big charts. The decline is caused by a prolonged, systematic exit from playlists. The small plateau in 2024 was artificial (a brief return of Playlist Reach on the chart), after which the track continued its natural decline due to the end of its lifecycle.</p>
+
+    <h4>What they have in common</h4>
+    <p>The key pattern in the data: each track goes through an absolutely identical development model: <strong>peak → active playlists → exit from rotation → cyclical fall in daily streams from -65% to -88%</strong>. Tracks lose momentum not because of the material's quality, but because of the specifics of the streaming ecosystem: without a regular second wave of marketing support or viral triggers, Spotify algorithms automatically shift attention to new releases.</p>
+
+    <h4>Analytics for each track</h4>
+    <ul>
+      <li><strong>The Kid I Used to Know (−65% from peak, ~31.8K/day)</strong> – The main locomotive and most powerful back-catalog. Despite the deep fall in 2025 after washing out of top editorial lists, the track retains a solid ~31.8K streams daily. With a current Track Rank of #21K+ and 63% popularity, it has a huge established core audience. The track lives on inertia, radio algorithms, and listeners' personal saves. It is an ideal candidate for support: a minimal push (e.g., a new trend or remix) can massively trigger algorithmic recommendations again.</li>
+      <li><strong>What You're Made Of (−18% from peak, ~14.7K/day)</strong> – The absolute leader in stability and cyclicity. Despite a planned decrease in Playlist Reach over the years, the track showed unique metric retention in 2025–2026 (daily drop of only 16%). Spotify algorithms firmly secured this track in long-term recommendations. It practically doesn't stagnate, acting as a reliable and predictable catalog asset that independently generates stable streams without additional investment.</li>
+      <li><strong>Brightside (−88% from peak, ~8.19K/day)</strong> – A classic "flash track" case with the deepest drop. Having an anomalous super-peak at the start in 2022 (~66.3K/day), the track instantly lost 80% of traffic the very next year due to the short life of the viral impulse or falling out of the charts. Currently, it has finally fixed itself at the level of a stable organic plateau (~8.19K/day). The track needs systemic work with external traffic and a re-entry into playlists to pull it out of its passive state.</li>
+      <li><strong>Vans (King Kavalier Remix) (−75% from peak, ~2.85K/day)</strong> – Genre fading of the release. Electronic remixes have a much shorter relevance period. The track passed its peak in 2022 and since then inevitably loses ~30% daily avg every year due to the systematic clearing of curator bases. Now it is in a phase of deep fading. The window of natural opportunities has closed — returning it to active life is only possible through targeted return to niche club/DJ selections.</li>
+      <li><strong>98 Degrees (−71% from peak, ~5.84K/day)</strong> – An example of prolonged and drawn-out stagnation. The track received a maximum push immediately upon release in 2021 but couldn't secure a place in active algorithms for long. A local spike in Playlist Reach in 2024 briefly paused the fall, but the overall trend remains non-Olympian — the track confidently moves into the passive old catalog category. Needs a complete reboot through external sources, as internal Spotify tools have already "fallen asleep" for it.</li>
+    </ul>
+
+    <h3>1.2. Which tracks are currently listened to the most</h3>
+    <div class="callout note">[Images omitted as per platform constraints]</div>
+
+    <h3>1.3 General statistics</h3>
+
+    <div class="verdict-box">
+      <h3>Verdict</h3>
+      <p>The Arrested Youth catalog is losing <strong>~119K streams/day</strong> across 3 key recoverable tracks — this is <strong>~$170–215K in unreceived royalties</strong> over 2 years in the US market alone. 3 tracks are in an active recovery window, 2 are in deep fading with a low ROI for resuscitation.</p>
+    </div>
+
+    <h5>✅ What works — tracks in the growth zone and current consumption:</h5>
+    <ul>
+      <li><strong>The Kid I Used to Know (~31.8K/day, 63% pop)</strong> — catalog flagship, catalog hero. Retains a core audience through algorithmic radio and personal libraries. Highest ROI on promo investments.</li>
+      <li><strong>What You're Made Of (~14.7K/day, 58% pop)</strong> — a phenomenon of stability: -18% from peak over 2 years, which in the industry is almost a miracle. Spotify algorithms "prescribed" it in long-term recommendations. A pure passive income asset.</li>
+      <li><strong>Brightside (~8.19K/day, 53% pop)</strong> — dropped by 88%, BUT retains a core audience and has a history of viral success → this means the track's DNA is playlist-friendly. If returned to playlists, the audience reaction will be fast. What this means psychologically: the algorithms haven't "forgotten" these tracks — they've simply been pushed out by new releases. The audience is ready, it just lacks a return trigger.</li>
+    </ul>
+
+    <h5>What needs improvement — risk zone and scale of losses:</h5>
+    <p>Tracks in the risk zone (low ROI on resuscitation):</p>
+    <ul>
+      <li><strong>Vans — King Kavalier Remix (~2.86K/day, -75%)</strong> — genre fading, electronic remixes have a short cycle. Resuscitation = disproportionate expenses. Leave in the passive catalog.</li>
+      <li><strong>98 Degrees (~5.84K/day, -71%)</strong> — prolonged stagnation, algorithms have "fallen asleep". Real restart is only possible through an external viral event (TikTok, film, sync). Not a priority.</li>
+    </ul>
+
+    <h4>Calculation of lost streams (from peak to current daily):</h4>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Track</th><th>Peak daily</th><th>Current daily</th><th>Loss/day</th><th>Loss over 2 years</th></tr></thead>
+        <tbody>
+          <tr><td>The Kid I Used to Know</td><td>90.1K</td><td>31.8K</td><td class="neg">−58.3K</td><td class="neg">−42.6M</td></tr>
+          <tr><td>Brightside</td><td>66.3K</td><td>8.19K</td><td class="neg">−58.1K</td><td class="neg">−42.4M</td></tr>
+          <tr><td>What You're Made Of</td><td>18.0K</td><td>14.7K</td><td class="neg">−3.3K</td><td class="neg">−2.4M</td></tr>
+          <tr class="total"><td>Total (top-3 for promotion)</td><td>—</td><td>—</td><td class="neg">−119.7K/day</td><td class="neg">−87.4M over 2 years</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Why this is critical:</strong> in the music industry, catalog revenue = 60–70% of an artist's income. Every lost stream is not just money, but also a reduction in the algorithmic weight of the track: fewer streams mean Spotify recommends it less → <strong>death loop</strong>.</p>
+
+    <h4>Calculation of potential royalties (US audience, Spotify rate ≈ $0.004/stream):</h4>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Return scenario</th><th>Streams/day returned</th><th>Royalties/day</th><th>Royalties over 2 years</th></tr></thead>
+        <tbody>
+          <tr><td>Conservative (30%)</td><td>~36K</td><td>$144</td><td>~$105K</td></tr>
+          <tr><td>Realistic (50%)</td><td>~60K</td><td>$240</td><td>~$175K</td></tr>
+          <tr><td>Ambitious (70%)</td><td>~84K</td><td>$336</td><td>~$245K</td></tr>
+          <tr><td>Full peak recovery (100%)</td><td>~120K</td><td>$480</td><td>~$350K</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>These are gross royalties. <strong>Artist net share (70%) = $73–245K over 2 years</strong> depending on the scenario.</p>
+  </section>
+
+  <!-- ===================== 2. YOUTUBE ===================== -->
+  <section id="youtube">
+    <h2><span class="num">2.</span>YOUTUBE Audit</h2>
+
+    <h3>2.1 TOP-5 ACTIVE HITS</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>#</th><th>Track</th><th>Views</th><th>Age</th><th>Why it's active</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>The Kid I Used to Know (Official Audio)</td><td>864K</td><td>6 years</td><td>Absolute leader and foundation of the channel. Almost twice as many views as any other track — organic growth in the nostalgia/growing up theme</td></tr>
+          <tr><td>2</td><td>98 Degrees (Official Video)</td><td>636K</td><td>5 years</td><td>The strongest official music video on the channel. Works stably in recommendations thanks to cinematic quality</td></tr>
+          <tr><td>3</td><td>Mirrors (Tour Video)</td><td>567K</td><td>7 years</td><td>Tour video with live energy — a unique format that attracts new audiences through authenticity</td></tr>
+          <tr><td>4</td><td>VANS (King Kavalier Remix)</td><td>539K</td><td>7 years</td><td>Remix version of the main hit — collab provides long-term reach and stable traffic</td></tr>
+          <tr><td>5</td><td>My Friends Are Robots (Audio)</td><td>492K</td><td>8 years</td><td>The oldest top track that still holds up — confirms deep penetration into the audience</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Key observation:</strong> "The Kid I Used to Know" with 864K views is the undisputed flagship of the channel — almost twice as powerful as the next track. Tracks from the 2017–2019 era dominate the top, while 2024–2025 releases show a significant drop in reach. The channel "lives in the past" and needs a new growth point.</p>
+
+    <h3>2.2 TOP-5 forgotten hits</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>#</th><th>Track</th><th>Views</th><th>Age</th><th>Potential for resuscitation</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Little Cup (Official Music Video)</td><td>52K</td><td>1 year</td><td>Very high — fresh official video without active promo. Best candidate for Shorts resuscitation</td></tr>
+          <tr><td>2</td><td>Walked Out in the Middle of the Night (Music Video)</td><td>73K</td><td>1 year</td><td>High — cinematic video, underestimated release. Needs targeted promo through social media, targeting, playlists.</td></tr>
+          <tr><td>3</td><td>Free Now (Official Video)</td><td>26K</td><td>1 year</td><td>High — bright visual style, theme of freedom is relevant. Potential for viral Shorts content</td></tr>
+          <tr><td>4</td><td>Echo (Official Audio)</td><td>32K</td><td>10 mos.</td><td>Medium — newest release, hasn't unlocked potential yet. Needs systemic promo</td></tr>
+          <tr><td>5</td><td>Money (Audio)</td><td>20K</td><td>2 years</td><td>Medium — provocative title and theme, but audio format limits reach</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.3 CALCULATION OF LOST VIEWS</h3>
+    <p>Estimation of missed views is the difference between actual metrics and potential metrics if active promo was present. Benchmark: similar formatted tracks on the channel gather 150–500+ thousand in the first year during an active promo cycle.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Track</th><th>Actual</th><th>Potential</th><th>Lost</th><th>Age</th><th>Reason for loss</th></tr></thead>
+        <tbody>
+          <tr><td>Little Cup (Official Music Video)</td><td>52K</td><td>350K</td><td class="neg">−298K</td><td>1 year</td><td>Fresh video without active promo</td></tr>
+          <tr><td>Walked Out in the Middle of the Night</td><td>73K</td><td>400K</td><td class="neg">−327K</td><td>1 year</td><td>Cinematic video without Shorts support</td></tr>
+          <tr><td>Free Now (Official Video)</td><td>26K</td><td>200K</td><td class="neg">−174K</td><td>1 year</td><td>Viral potential not realized</td></tr>
+          <tr><td>Echo (Official Audio)</td><td>32K</td><td>150K</td><td class="neg">−118K</td><td>10 mos.</td><td>Newest release without a video</td></tr>
+          <tr><td>Money (Audio)</td><td>20K</td><td>120K</td><td class="neg">−100K</td><td>2 years</td><td>Audio format blocks growth</td></tr>
+          <tr><td>Ego (Lyric Video)</td><td>195K</td><td>500K</td><td class="neg">−305K</td><td>4 years</td><td>Lyric video instead of an official music video</td></tr>
+          <tr><td>Find My Own Way (feat. Mark Hoppus)</td><td>241K</td><td>800K</td><td class="neg">−559K</td><td>4 years</td><td>Collab with a legend didn't get proper promo</td></tr>
+          <tr class="total"><td><strong>TOTAL</strong></td><td><strong>639K</strong></td><td><strong>2.52M</strong></td><td class="neg"><strong>−1.88M</strong></td><td><strong>—</strong></td><td><strong>Total missed audience</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>BRIEF CONCLUSIONS</h4>
+    <ul>
+      <li><strong>Gap between eras:</strong> The channel has an overwhelmingly powerful back-catalog from 2017–2019 (The Kid I Used to Know, 98 Degrees, VANS), but 2024–2025 releases gather 20–40 times fewer views. This is a classic "platform effect without a strategy" — the quality is there, the promo is not.</li>
+      <li><strong>Collaborations are underestimated:</strong> "Find My Own Way (feat. Mark Hoppus)" — a collab with a blink-182 legend — gathered only 241K views in 4 years. This is catastrophically low for such a partnership. An estimated 559K potential views were lost.</li>
+      <li><strong>Shorts — a missed opportunity:</strong> New videos (Little Cup, Walked Out, Free Now) have strong visual potential, but no Shorts content was made from them. This correlates directly with low metrics.</li>
+      <li><strong>Nostalgia engine is working:</strong> The track "The Kid I Used to Know" (2019) with 864K views continues to attract new audiences — proving that the nostalgic/coming-of-age theme is a key entry point for new listeners.</li>
+    </ul>
+
+    <h4>RECOMMENDATIONS</h4>
+    <ul>
+      <li><strong>Priority 1 — Shorts resuscitation of new releases:</strong> Little Cup and Walked Out in the Middle of the Night are priority tracks for Shorts. Both have official videos with cinematic footage. Cut 15–30 second vertical videos with text on screen. Free Now (Official Video) is an ideal candidate for viral Shorts. Bright red-and-white design and dynamic editing — an exact hit for TikTok/Reels/Shorts algorithms.</li>
+      <li><strong>Priority 2 — Reactivation of the Mark Hoppus collab:</strong> "Find My Own Way" received catastrophically little promo for such a partnership. Make a Short with an emphasis: "We recorded a song with a member of blink-182" — a nostalgic trigger for the 25–35 audience. Use Mark Hoppus's name in Bio and titles as social proof in the international market.</li>
+      <li><strong>Priority 3 — Nostalgic content around the back catalog:</strong> "The Kid I Used to Know" — 6 years ago this track gathered 864K views. Make a Shorts series in a "then vs now" format or behind-the-scenes to redirect old traffic to new content. Similarly for "98 Degrees" and "VANS" — these tracks are still in an active YouTube recommendation cycle, providing a free entry point for new subscribers.</li>
+      <li><strong>Priority 4 — Next big release with a promo strategy:</strong> No track after 2020 has exceeded 100K views — this is not a quality problem, it's a release strategy problem. The next release must come with: (1) a Shorts campaign 2–3 weeks before release, (2) an official music video simultaneously with the release, (3) cross-posting on Instagram/TikTok.</li>
+    </ul>
+  </section>
+
+  <!-- ===================== 3. TIKTOK & INSTAGRAM ===================== -->
+  <section id="tiktok">
+    <h2><span class="num">3.</span>TikTok and Instagram</h2>
+
+    <h3>3.1 Analysis of sounds on TikTok</h3>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Sound</th><th>Uses on TikTok</th></tr></thead>
+        <tbody>
+          <tr><td>Vans (King Kavalier remix)</td><td>12.4k</td></tr>
+          <tr><td>The kid I used to know</td><td>4.1k</td></tr>
+          <tr><td>My friend</td><td>1.7k</td></tr>
+          <tr><td>Mirrors</td><td>1.7k</td></tr>
+          <tr><td>Paul McCartney</td><td>1.3k</td></tr>
+          <tr><td>98 degrees</td><td>1.2k</td></tr>
+          <tr><td>others</td><td>less than 1000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>New tracks have a critically low number of TikTok videos:</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Sound</th><th>Uses on TikTok</th></tr></thead>
+        <tbody>
+          <tr><td>Walked Out in the Middle of the Night</td><td>166</td></tr>
+          <tr><td>Ego</td><td>119</td></tr>
+          <tr><td>Free Now</td><td>28</td></tr>
+          <tr><td>Echo</td><td>17</td></tr>
+          <tr><td>Money</td><td>6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>So the problem is not in the music or the visuals. The problem is in the absence of systemic media promotion and work with platform algorithms.</p>
+
+    <h5>Main problem:</h5>
+    <ul>
+      <li>the artist is not building a TikTok presence;</li>
+      <li>no regular content;</li>
+      <li>no personal brand;</li>
+      <li>no UGC strategy;</li>
+      <li>no launching of trends;</li>
+      <li>no warming up of the audience;</li>
+      <li>no constant "reminding the algorithms" that the release exists.</li>
+    </ul>
+    <p>Releases are essentially dropping into a vacuum. The artist already has proof that his music can live on TikTok.</p>
+
+    <h5>But right now:</h5>
+    <ul>
+      <li>TikTok account practically doesn't exist;</li>
+      <li>Instagram is not used;</li>
+      <li>audience is not getting content;</li>
+      <li>fanbase is not activated;</li>
+      <li>algorithms are not receiving activity signals.</li>
+    </ul>
+    <p>In the modern music industry, a song without a short-form ecosystem has almost no chance of realizing its maximum potential.</p>
+
+    <h3>3.2 Search for a sleeping hit - a potential TikTok hit that can be resuscitated with a push</h3>
+    <p>Currently, there is no single obvious sleeping hit that has almost become a trend and only needs one push. The situation looks like this: several tracks have already shown their potential and audience response, even without any TikTok strategy, content, or media push. Meaning, the music resonated with people. Tracks that have gained the highest number of listens are already potential tracks for resuscitation. Meaning, these tracks gained usage not through a push mechanic, but because the audience themselves found a use for them in their content.</p>
+    <p>The task now is not to "find one magic track". But to reactivate already proven popular sounds and give them a second lifecycle through the proper use of promotion channels. In fact, these tracks have already proven they can live on TikTok, nobody just helped them grow further.</p>
+
+    <h5>None of the tracks received:</h5>
+    <ul>
+      <li>its own trend;</li>
+      <li>a systemic UGC push;</li>
+      <li>a TikTok strategy;</li>
+      <li>a repeated re-push;</li>
+      <li>personal participation of the artist in the content.</li>
+    </ul>
+    <p>Because of this, even strong sounds stopped at the early organic stage instead of transitioning to massive algorithmic growth.</p>
+
+    <h5>Each of these tracks needs:</h5>
+    <ul>
+      <li>a defined usage format;</li>
+      <li>an explanation of the track's meaning to the audience;</li>
+      <li>a repeatable template;</li>
+      <li>clear logic for use;</li>
+      <li>stimulation for fans to use the sound;</li>
+      <li>building a trend around an emotion or situation.</li>
+    </ul>
+
+    <div class="callout insight">
+      <p><strong>TikTok does not promote songs. TikTok promotes scenarios for using songs.</strong></p>
+    </div>
+  </section>
+
+  <!-- ===================== 4. COMPARATIVE ANALYSIS ===================== -->
+  <section id="comparison">
+    <h2><span class="num">4.</span>Comparative analysis</h2>
+
+    <p class="lede"><em>Graph 1 — Trajectory of the catalog's flagship</em></p>
+    <p>Track The Kid I Used to Know: growth 2021–2023, collapse 2024–2026 after dropping out of top playlists. Classic lifecycle model without a second wave of support.</p>
+
+    <p class="lede"><em>Graph 2 — Decline across all 5 catalog tracks</em></p>
+    <p>Peak daily vs current daily. Brightside is the most critical case (−88%), What You're Made Of is the standard of retention (−18%).</p>
+
+    <p class="lede"><em>Graph 3 — Catalog scenarios for 6 months</em></p>
+    <p>No support | Spotify-focus | Full support</p>
+
+    <h4>What the report shows:</h4>
+    <ul>
+      <li><strong>Graph 1</strong> captures the real model of The Kid I Used to Know — the catalog's flagship. The track grew from 37.4K daily in 2021 to a peak of 90.1K in 2023, after which it fell by −65% (to 31.8K) due to being washed out of top editorial playlists in 2024–2025. This is a classic "peak → playlists → exit" cycle without a second wave of support.</li>
+      <li><strong>Graph 2</strong> — comparison across all five tracks: Brightside is the most revealing case of a catastrophic exit from the algorithm (−88% from peak, from 66.3K to 8.19K daily), Vans (King Kavalier Remix) lost −75% due to genre fading, while What You're Made Of is the only track holding at near-peak (−18% over 2 years), which in the industry is statistically a phenomenal anomaly.</li>
+      <li><strong>Graph 3</strong> — this is the key part: three scenarios for 6 months ahead.</li>
+      <li>Without support, the catalog drops to ~48K daily (−24%).</li>
+      <li>With Spotify-focus on the top-3 tracks — to ~123K (+95%).</li>
+      <li>With full cross-platform ecosystem (Spotify + YouTube Shorts + TikTok UGC + fan accounts) — to ~175K daily (+178%).</li>
+      <li>A difference of 3.6 times between the worst and best scenarios.</li>
+    </ul>
+
+    <div class="callout insight">
+      <p><strong>Key insight:</strong> Playlists are not a source of streams; they are an algorithm trigger. Algorithms are the main source of long-term traffic. Without playlists, the algorithm doesn't receive enough signals → the track "goes silent". With constant playlisting of the top-3 tracks simultaneously (Kid + What You're Made Of + Brightside) → the algorithm receives a massive synchronous signal → the catalog begins to grow non-linearly. That is why the real potential of the Arrested Youth catalog is not 63K daily, but <strong>123–135K with systematic playlisting</strong>.</p>
+    </div>
+
+    <div class="callout">
+      <p>* if we connect complex marketing in the form of TikTok support (artist account + farm of fan accounts + targeting + UGC through micro-influencers) — this figure can reach <strong>175K daily</strong>, and over a 24-month horizon generate up to <strong>128M streams</strong> and <strong>~$511K in gross royalties</strong> in the US market. Especially considering that Vans (King Kavalier Remix) already has 12.4K uses on TikTok without any push — this is a ready-made base that just needs to be ignited.</p>
+    </div>
+
+    <p><strong>Conclusion:</strong> Right now, the catalog generates ~63K daily streams. The real ceiling with constant playlisting of the top-3 is 123–135K, with full cross-platform activation — 175K. This is not an optimistic forecast; it is what the data already confirms: every track, while in playlists, showed exactly this dynamic (Kid held 90.1K daily at its peak, Brightside — 66.3K). The task is not to let What You're Made Of repeat the fate of Brightside.</p>
+
+    <div class="priority-card">
+      <div class="priority-tag">Priority #1</div>
+      <div>Scale What You're Made Of right now, while the track is at near-peak (-18% is still pole position in the catalog). The window is open, it needs to be pitched to momentum playlists while algorithms still "remember" the track.</div>
+    </div>
+    <div class="priority-card">
+      <div class="priority-tag">Priority #2</div>
+      <div>Resuscitate The Kid I Used to Know via external traffic: it has all the prerequisites for a second wave (123M total streams, 63% popularity, 4.1K TikTok uses, 864K YouTube views — flagship on two platforms simultaneously).</div>
+    </div>
+    <div class="priority-card">
+      <div class="priority-tag sub">Brightside</div>
+      <div>Brightside needs a complete reboot via TikTok → Spotify: the track's DNA is playlist-friendly (66.3K daily at peak proves it), but a new viral impulse is needed to return to editorial lists.</div>
+    </div>
+    <div class="priority-card">
+      <div class="priority-tag sub">Vans / 98°</div>
+      <div>Vans (King Kavalier Remix) — urgently into TikTok activation, before the 12.4K ready uses burn out: it's the cheapest path to a trend in the whole catalog. 98 Degrees — in background mode, without an external viral event (sync in film/series) it makes no sense to resuscitate.</div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  Arrested Youth <span class="dot">×</span> ENKO <span class="dot">×</span> LIRA &nbsp;—&nbsp; Back Catalog Analysis
+</footer>
+
+<script>
+  // active nav highlight on scroll
+  const sections = [...document.querySelectorAll('section[id]')];
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const byId = id => links.find(l => l.getAttribute('href') === '#' + id);
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = byId(e.target.id);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
